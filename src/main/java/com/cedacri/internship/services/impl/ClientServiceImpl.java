@@ -17,13 +17,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client create(Client value) {
-        return null;
+    public void create(Client value) {
     }
 
     @Override
-    public Client update(Client value) {
-        return null;
+    public void update(Client value) {
     }
 
     @Override

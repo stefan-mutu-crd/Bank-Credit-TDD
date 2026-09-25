@@ -17,13 +17,11 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public Loan create(Loan value) {
-        return null;
+    public void create(Loan value) {
     }
 
     @Override
-    public Loan update(Loan value) {
-        return null;
+    public void update(Loan value) {
     }
 
     @Override

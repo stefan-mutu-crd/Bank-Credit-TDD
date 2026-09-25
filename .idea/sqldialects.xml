@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cedacri/internship/services/impl/BankServiceImpl.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/creste_db.sql" dialect="H2" />
+    <file url="file://$PROJECT_DIR$/src/test/java/com/cedacri/internship/services/impl/BankServiceTest.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/test/java/com/cedacri/internship/services/impl/TestConfig.java" dialect="H2" />
+    <file url="file://$PROJECT_DIR$/src/test/resources/init_db.sql" dialect="H2" />
+  </component>
+</project>

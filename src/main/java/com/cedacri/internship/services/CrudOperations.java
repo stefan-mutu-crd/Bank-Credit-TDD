@@ -4,14 +4,13 @@ import java.util.List;
 
 public interface CrudOperations<T> {
 
-    T getById(int id);
+    T getById(int id) throws RuntimeException;
 
-    List<T> getAll();
+    List<T> getAll() throws RuntimeException;
 
-    T create(T value);
+    void create(T value) throws RuntimeException;
 
-    T update(T value);
+    void update(T value) throws RuntimeException;
 
-    void delete(int id);
-
+    void delete(int id) throws RuntimeException;
 }

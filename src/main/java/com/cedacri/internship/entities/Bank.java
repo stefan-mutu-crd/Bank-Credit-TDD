@@ -5,60 +5,93 @@ import java.util.Objects;
 
 public class Bank {
 
-    private String bankBranch;
+    private final int id;
 
-    private String address;
+    private final String branch;
 
-    private List<Client> clients;
+    private final String address;
 
-    public Bank(String bankBranch, String address, List<Client> clients) {
-        this.bankBranch = bankBranch;
-        this.address = address;
-        this.clients = clients;
+    private final List<Client> clients;
+
+
+    Bank(Builder builder) {
+        this.id = builder.id;
+        this.branch = builder.branch;
+        this.address = builder.address;
+        this.clients = builder.clients;
     }
 
-    public String getBankBranch() {
-        return bankBranch;
+    public int getId() {
+        return id;
     }
 
-    public void setBankBranch(String bankBranch) {
-        this.bankBranch = bankBranch;
+    public String getBranch() {
+        return branch;
     }
+
 
     public String getAddress() {
         return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public List<Client> getClients() {
         return clients;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Bank bank = (Bank) o;
-        return Objects.equals(bankBranch, bank.bankBranch) && Objects.equals(address, bank.address) && Objects.equals(clients, bank.clients);
+        return id == bank.id && Objects.equals(branch, bank.branch) && Objects.equals(address, bank.address) && Objects.equals(clients, bank.clients);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bankBranch, address, clients);
+        return Objects.hash(id, branch, address, clients);
     }
 
     @Override
     public String toString() {
         return "Bank{" +
-                "bankBranch='" + bankBranch + '\'' +
+                "id='" + id + '\'' +
+                ", bankBranch='" + branch + '\'' +
                 ", address='" + address + '\'' +
                 ", clients=" + clients +
                 '}';
+    }
+
+    public static class Builder {
+
+        private int id;
+
+        private String branch;
+
+        private String address;
+
+        private List<Client> clients;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder branch(String branch) {
+            this.branch=branch;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder clients(List<Client> clients) {
+            this.clients = clients;
+            return this;
+        }
+
+        public Bank build() {
+            return new Bank(this);
+        }
     }
 }

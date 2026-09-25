@@ -5,47 +5,44 @@ import java.util.Objects;
 
 public class Loan {
 
-    private double initial;
+    private final int id;
 
-    private double refunded;
+    private final double initialSum;
 
-    private String purpose;
+    private final double refunded;
 
-    private LocalDate dateOfIssue;
+    private final String purpose;
 
-    private LocalDate deadline;
+    private final LocalDate dateOfIssue;
 
-    private int percentage;
+    private final LocalDate deadline;
 
-    public Loan(double initial,
-                double refunded,
-                String purpose,
-                LocalDate dateOfIssue,
-                LocalDate deadline,
-                int percentage) {
-        this.initial = initial;
-        this.refunded = refunded;
-        this.purpose = purpose;
-        this.dateOfIssue = dateOfIssue;
-        this.deadline = deadline;
-        this.percentage = percentage;
+    private final int percentage;
+
+    Loan(Builder builder) {
+        this.id = builder.id;
+        this.initialSum = builder.initialSum;
+        this.refunded = builder.refunded;
+        this.purpose = builder.purpose;
+        this.dateOfIssue = builder.dateOfIssue;
+        this.deadline = builder.deadline;
+        this.percentage = builder.percentage;
     }
 
-    public double getInitial() {
-        return initial;
+    public int getId() {
+        return id;
     }
 
-    public void setInitial(double initial) {
-        this.initial = initial;
+
+    public double getInitialSum() {
+        return initialSum;
     }
+
 
     public double getRefunded() {
         return refunded;
     }
 
-    public void setRefunded(double refunded) {
-        this.refunded = refunded;
-    }
 
     public String getPurpose() {
         return purpose;
@@ -55,35 +52,23 @@ public class Loan {
         return percentage;
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
 
     public LocalDate getDateOfIssue() {
         return dateOfIssue;
     }
 
-    public void setDateOfIssue(LocalDate dateOfIssue) {
-        this.dateOfIssue = dateOfIssue;
-    }
 
     public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDate deadline) {
-        this.deadline = deadline;
-    }
-
-    public void setPercentage(int percentage) {
-        this.percentage = percentage;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Loan loan = (Loan) o;
-        return Double.compare(initial, loan.initial) == 0
+        return id == loan.id
+                && Double.compare(initialSum, loan.initialSum) == 0
                 && Double.compare(refunded, loan.refunded) == 0
                 && percentage == loan.percentage
                 && Objects.equals(purpose, loan.purpose)
@@ -93,19 +78,81 @@ public class Loan {
 
     @Override
     public int hashCode() {
-        return Objects.hash(initial, refunded, purpose, dateOfIssue, deadline, percentage);
+        return Objects.hash(id,
+                initialSum,
+                refunded,
+                purpose,
+                dateOfIssue,
+                deadline,
+                percentage);
     }
 
     @Override
     public String toString() {
         return "Loan{" +
-                "initial=" + initial +
+                "id=" + id +
+                ", initialSum=" + initialSum +
                 ", refunded=" + refunded +
                 ", purpose='" + purpose + '\'' +
                 ", dateOfIssue=" + dateOfIssue +
                 ", deadline=" + deadline +
                 ", percentage=" + percentage +
                 '}';
+    }
+
+    public static class Builder {
+        private int id;
+
+        private double initialSum;
+
+        private double refunded;
+
+        private String purpose;
+
+        private LocalDate dateOfIssue;
+
+        private LocalDate deadline;
+
+        private int percentage;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder initialSum(double initialSum) {
+            this.initialSum = initialSum;
+            return this;
+        }
+
+        public Builder refunded(double refunded) {
+            this.refunded = refunded;
+            return this;
+        }
+
+        public Builder purpose(String purpose) {
+            this.purpose = purpose;
+            return this;
+        }
+
+        public Builder dateOfIssue(LocalDate dateOfIssue) {
+            this.dateOfIssue = dateOfIssue;
+            return this;
+        }
+
+        public Builder deadline(LocalDate deadline) {
+            this.deadline = deadline;
+            return this;
+        }
+
+        public Builder percentage(int percentage) {
+            this.percentage = percentage;
+            return this;
+        }
+
+        public Loan build() {
+            return new Loan(this);
+        }
     }
 }
 
