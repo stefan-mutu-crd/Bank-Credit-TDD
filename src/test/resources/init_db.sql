@@ -73,10 +73,10 @@ VALUES (10000, 11000, 'Achiziționare frigider', '2025-05-01', '2026-05-01', 10,
        (12000, 5000, 'Vacanță în străinătate', '2024-10-01', '2025-10-01', 14, 6),       -- expired     (total 13680)
        (25000, 27750, 'Deschidere afacere', '2022-04-10', '2024-04-10', 11, 8),          -- repaid      (total 27750)
        (40000, 15000, 'Extindere afacere', '2025-11-05', '2027-11-05', 10, 8),           -- in progress (total 44000)
-       (6000, 0, 'Tratament medical', '2025-03-01', '2026-03-01', 13, 9),                -- expired     (total 6780)
-       (100000, 20000, 'Construcție casă', '2026-06-01', '2031-06-01', 7, 10),           -- in progress (total 107000)
-       (15000, 16800, 'Achiziționare motocicletă', '2024-07-20', '2025-07-20', 12, 11),  -- repaid      (total 16800)
-       (9000, 4000, 'Achiziționare telefon și electrocasnice', '2026-02-01', '2027-02-01', 10,
+       (2000, 0, 'Tratament medical', '2025-03-01', '2026-03-01', 13, 9),                -- expired     (total 6780)
+       (100000, 100000, 'Construcție casă', '2026-06-01', '2031-06-01', 7, 10),           -- in progress (total 107000)
+       (15000, 20000, 'Achiziționare motocicletă', '2024-07-20', '2025-07-20', 12, 11),  -- repaid      (total 16800)
+       (9000, 9000, 'Achiziționare telefon și electrocasnice', '2026-02-01', '2027-02-01', 10,
         11),                                                                             -- in progress (total 9900)
        (45000, 20000, 'Achiziționare teren agricol', '2023-09-01', '2025-09-01', 8, 12), -- expired     (total 48600)
        (7000, 2500, 'Cursuri de programare', '2026-04-10', '2027-04-10', 15, 13),        -- in progress (total 8050)

@@ -4,6 +4,7 @@ import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Bank;
 import com.cedacri.internship.exceptions.ResourceNotFoundException;
 import com.cedacri.internship.repositories.impl.BankRepositoryImpl;
+import com.cedacri.internship.repositories.impl.LoanRepositoryImpl;
 import com.cedacri.internship.services.BankService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,9 @@ class BankServiceTest extends TestConfig {
     private final BankService bankService;
 
     BankServiceTest() {
-        var repository = new BankRepositoryImpl(super.dataSource);
-        this.bankService = new BankServiceImpl(repository);
+        var bankRepository = new BankRepositoryImpl(super.dataSource);
+        var loanRepository = new LoanRepositoryImpl(super.dataSource);
+        this.bankService = new BankServiceImpl(bankRepository,loanRepository);
     }
 
     @Test
@@ -106,11 +108,23 @@ class BankServiceTest extends TestConfig {
     }
 
     @Test
-    void getBalance() {
+    void getBalance_NegativeBalance_returnsNegativeValue() {
+        Assertions.assertTrue(bankService.getBalance(1) < 0);
     }
 
     @Test
-    void isProfitable() {
+    void getBalance_PositiveBalance_returnsNegativeValue() {
+        Assertions.assertTrue(bankService.getBalance(3) > 0);
+    }
+
+    @Test
+    void isProfitable_NegativeBalance_ReturnsTrue() {
+        Assertions.assertFalse(bankService.isProfitable(1));
+    }
+
+    @Test
+    void isProfitable_NegativeBalance_ReturnsFalse() {
+        Assertions.assertTrue(bankService.isProfitable(3));
     }
 
     private void clearDB() {

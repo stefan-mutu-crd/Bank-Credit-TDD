@@ -33,6 +33,30 @@ public class LoanRepositoryImpl extends AbstractJDBCRepository<Loan> implements 
     }
 
     @Override
+    public List<Loan> findAllByBankId(int id) {
+        String query = """
+                SELECT * FROM loans
+                WHERE client_id IN (
+                    SELECT id FROM clients
+                    WHERE bank_id = ?
+                    )
+                """;
+        List<Loan> loans = new ArrayList<>();
+        try (var connection = dataSource.getConnection();
+             var statement = connection.prepareStatement(query)) {
+            statement.setInt(1, id);
+            try (var resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    loans.add(mapRow(resultSet));
+                }
+            }
+            return loans;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void create(Loan loan) throws RuntimeException {
         String query = """
                 INSERT INTO loans (initial_sum,

@@ -7,4 +7,6 @@ import java.util.List;
 public interface LoanRepository extends CrudRepository<Loan> {
 
     List<Loan> findAllByClientId(int id);
+
+    List<Loan> findAllByBankId(int id);
 }

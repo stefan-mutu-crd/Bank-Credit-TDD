@@ -4,7 +4,7 @@ import com.cedacri.internship.entities.Bank;
 
 public interface BankService extends Operations<Bank> {
 
-    double getBalance();
+    double getBalance(int bankId);
 
-    boolean isProfitable();
+    boolean isProfitable(int bankId);
 }
