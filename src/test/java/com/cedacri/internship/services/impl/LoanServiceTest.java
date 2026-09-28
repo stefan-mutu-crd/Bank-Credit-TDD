@@ -108,18 +108,21 @@ class LoanServiceTest extends TestConfig {
         Assertions.assertThrows(RuntimeException.class, () -> loanService.findById(5));
     }
 
-//    @Test
-//    void delete_existingId_used_throwsRuntimeException() {
-//        Assertions.assertThrows(RuntimeException.class, () -> loanService.delete(1));
-//    }
-
     @Test
     void delete_wrongId_throwsRuntimeException() {
         Assertions.assertThrows(RuntimeException.class, () -> loanService.remove(999));
     }
 
     @Test
-    void getBalance() {
+    void getBalance_paidOfLoan_returnPositiveNumber() {
+        Loan loan = loanService.findById(1);
+        Assertions.assertEquals(1000, loanService.getBalance(loan));
+    }
+
+    @Test
+    void getBalance_unpaidLoan_returnNegative() {
+        Loan loan = loanService.findById(2);
+        Assertions.assertEquals(-3000, loanService.getBalance(loan));
     }
 
     private void clearDB() {

@@ -42,7 +42,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public double getBalance() {
-        return 0;
+    public double getBalance(Loan loan) {
+        return loan.getRefunded()-loan.getInitialSum();
     }
 }

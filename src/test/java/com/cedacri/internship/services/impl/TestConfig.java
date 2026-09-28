@@ -1,7 +1,6 @@
 package com.cedacri.internship.services.impl;
 
 import com.cedacri.internship.config.DataSourceFactory;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -19,13 +18,12 @@ public abstract class TestConfig {
 
     @BeforeEach
     void initDB() {
-
         try (var connection = dataSource.getConnection();
              var statement = connection.createStatement()) {
             statement.execute("RUNSCRIPT FROM 'src/test/resources/init_db.sql'");
 
         } catch (Exception e) {
-
+            throw new RuntimeException(e);
         }
     }
 

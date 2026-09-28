@@ -4,6 +4,6 @@ import com.cedacri.internship.entities.Loan;
 
 public interface LoanService extends Operations<Loan> {
 
-    double getBalance();
+    double getBalance(Loan loan);
 
 }
