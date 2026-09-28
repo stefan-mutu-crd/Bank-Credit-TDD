@@ -67,7 +67,7 @@ VALUES (10000, 11000, 'Achiziționare frigider', '2025-05-01', '2026-05-01', 10,
        (5000, 2000, 'Achiziționare laptop', '2026-03-10', '2027-03-10', 12, 1),          -- in progress (total 5600)
        (50000, 30000, 'Achiziționare automobil', '2024-02-15', '2026-02-15', 8, 2),      -- expired     (total 54000)
        (20000, 23000, 'Reparație casă', '2023-06-01', '2025-06-01', 15, 3),              -- repaid      (total 23000)
-       (150000, 40000, 'Renovare apartament', '2025-01-20', '2030-01-20', 6, 3),         -- in progress (total 159000)
+       (150000, 160000, 'Renovare apartament', '2025-01-20', '2030-01-20', 6, 3),         -- in progress (total 159000)
        (8000, 3000, 'Achiziționare mobilă', '2025-09-01', '2026-09-01', 10, 4),          -- expired     (total 8800)
        (30000, 10000, 'Studii universitare', '2026-01-15', '2028-01-15', 9, 5),          -- in progress (total 32700)
        (12000, 5000, 'Vacanță în străinătate', '2024-10-01', '2025-10-01', 14, 6),       -- expired     (total 13680)

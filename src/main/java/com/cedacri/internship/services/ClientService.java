@@ -4,8 +4,8 @@ import com.cedacri.internship.entities.Client;
 
 public interface ClientService extends Operations<Client> {
 
-    double getBalance();
+    double getBalance(int clientId);
 
-    boolean isValidForNewLoan();
+    boolean isValidForNewLoan(int clientId);
 
 }

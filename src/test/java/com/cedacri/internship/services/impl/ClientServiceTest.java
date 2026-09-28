@@ -4,6 +4,7 @@ import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Client;
 import com.cedacri.internship.exceptions.ResourceNotFoundException;
 import com.cedacri.internship.repositories.impl.ClientRepositoryImpl;
+import com.cedacri.internship.repositories.impl.LoanRepositoryImpl;
 import com.cedacri.internship.services.ClientService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,9 @@ class ClientServiceTest extends TestConfig {
     private final ClientService clientService;
 
     ClientServiceTest() {
-        var repository = new ClientRepositoryImpl(super.dataSource);
-        this.clientService = new ClientServiceImpl(repository);
+        var clientRepository = new ClientRepositoryImpl(super.dataSource);
+        var loanRepository = new LoanRepositoryImpl(super.dataSource);
+        this.clientService = new ClientServiceImpl(clientRepository, loanRepository);
     }
 
     @Test
@@ -106,7 +108,23 @@ class ClientServiceTest extends TestConfig {
     }
 
     @Test
-    void isValidForNewLoan() {
+    void getBalance_NegativeBalance_returnsNegativeValue() {
+        Assertions.assertTrue(clientService.getBalance(1) < 0);
+    }
+
+    @Test
+    void getBalance_PositiveBalance_returnsNegativeValue() {
+        Assertions.assertTrue(clientService.getBalance(3) > 0);
+    }
+
+    @Test
+    void isValidForNewLoan_NegativeBalance_ReturnsTrue() {
+        Assertions.assertFalse(clientService.isValidForNewLoan(1));
+    }
+
+    @Test
+    void isValidForNewLoan_NegativeBalance_ReturnsFalse() {
+        Assertions.assertTrue(clientService.isValidForNewLoan(3));
     }
 
     private void clearDB() {

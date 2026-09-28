@@ -5,6 +5,8 @@ import com.cedacri.internship.entities.Loan;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoanRepositoryImpl extends AbstractJDBCRepository<Loan> implements com.cedacri.internship.repositories.LoanRepository {
 
@@ -13,21 +15,21 @@ public class LoanRepositoryImpl extends AbstractJDBCRepository<Loan> implements 
     }
 
     @Override
-    protected Loan mapRow(ResultSet resultSet) throws SQLException {
-        return new Loan.Builder()
-                .id(resultSet.getInt("id"))
-                .initialSum(resultSet.getDouble("initial_sum"))
-                .refunded(resultSet.getDouble("refunded"))
-                .purpose(resultSet.getString("purpose"))
-                .dateOfIssue(resultSet.getDate("date_of_issue").toLocalDate())
-                .deadline(resultSet.getDate("deadline").toLocalDate())
-                .percentage(resultSet.getInt("percentage"))
-                .build();
-    }
-
-    @Override
-    protected String tableName() {
-        return "loans";
+    public List<Loan> findAllByClientId(int id) {
+        String query = "SELECT * FROM " + tableName() + " WHERE client_id=?";
+        List<Loan> loans = new ArrayList<>();
+        try (var connection = dataSource.getConnection();
+             var statement = connection.prepareStatement(query)) {
+            statement.setInt(1, id);
+            try (var resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    loans.add(mapRow(resultSet));
+                }
+            }
+            return loans;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -85,4 +87,24 @@ public class LoanRepositoryImpl extends AbstractJDBCRepository<Loan> implements 
             throw new RuntimeException(e);
         }
     }
+
+
+    @Override
+    protected Loan mapRow(ResultSet resultSet) throws SQLException {
+        return new Loan.Builder()
+                .id(resultSet.getInt("id"))
+                .initialSum(resultSet.getDouble("initial_sum"))
+                .refunded(resultSet.getDouble("refunded"))
+                .purpose(resultSet.getString("purpose"))
+                .dateOfIssue(resultSet.getDate("date_of_issue").toLocalDate())
+                .deadline(resultSet.getDate("deadline").toLocalDate())
+                .percentage(resultSet.getInt("percentage"))
+                .build();
+    }
+
+    @Override
+    protected String tableName() {
+        return "loans";
+    }
+
 }
