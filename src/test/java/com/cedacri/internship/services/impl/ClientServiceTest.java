@@ -2,8 +2,8 @@ package com.cedacri.internship.services.impl;
 
 import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Client;
-import com.cedacri.internship.entities.Client;
 import com.cedacri.internship.exceptions.ResourceNotFoundException;
+import com.cedacri.internship.repositories.impl.ClientRepositoryImpl;
 import com.cedacri.internship.services.ClientService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,40 +11,38 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ClientServiceTest extends TestConfig{
+class ClientServiceTest extends TestConfig {
 
     private final ClientService clientService;
 
     ClientServiceTest() {
-        this.clientService = new ClientServiceImpl();
+        var repository = new ClientRepositoryImpl(super.dataSource);
+        this.clientService = new ClientServiceImpl(repository);
     }
-
 
     @Test
     void getById_existingId_returnsBank() {
-        Client client = clientService.getById(1);
+        Client client = clientService.findById(1);
         Assertions.assertEquals(1, client.getId());
         Assertions.assertEquals("Ștefan Mutu", client.getFullName());
-        Assertions.assertEquals(LocalDate.of(1998,8,15), client.getBirthDate());
+        Assertions.assertEquals(LocalDate.of(1998, 8, 15), client.getBirthDate());
     }
 
     @Test
     void getById_nonExistingId_returnsNull() {
-        Assertions.assertThrows(ResourceNotFoundException.class, () ->clientService.getById(999));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> clientService.findById(999));
     }
 
     @Test
     void getAll_populatedDb_returnsAll() {
-        List<Client> banks = clientService.getAll();
-        Assertions.assertEquals(16, banks.size());
+        List<Client> banks = clientService.findAll();
+        Assertions.assertEquals(17, banks.size());
     }
 
     @Test
     void getAll_emptyDb_returnsEmpty() {
         clearDB();
-        List<Client> banks = clientService.getAll();
+        List<Client> banks = clientService.findAll();
         Assertions.assertTrue(banks.isEmpty());
     }
 
@@ -52,11 +50,11 @@ class ClientServiceTest extends TestConfig{
     void create_validInput_returnsNothing() {
         Client client = new Client.Builder()
                 .fullName("Ghorghe Topa")
-                .birtDate(LocalDate.of(1960,1,1))
+                .birtDate(LocalDate.of(1960, 1, 1))
                 .build();
 
-        clientService.create(client);
-        List<Client> banks = clientService.getAll();
+        clientService.add(client);
+        List<Client> banks = clientService.findAll();
         Assertions.assertEquals(18, banks.size());
     }
 
@@ -64,7 +62,7 @@ class ClientServiceTest extends TestConfig{
     void create_invalidInput_throwsRuntimeException() {
         Client client = new Client.Builder()
                 .build();
-        Assertions.assertThrows(RuntimeException.class, () -> clientService.create(client));
+        Assertions.assertThrows(RuntimeException.class, () -> clientService.add(client));
     }
 
     @Test
@@ -72,11 +70,11 @@ class ClientServiceTest extends TestConfig{
         Client client = new Client.Builder()
                 .id(1)
                 .fullName("Ion Creanga")
-                .birtDate(LocalDate.of(1860,12,1))
+                .birtDate(LocalDate.of(1860, 12, 1))
                 .build();
 
-        clientService.update(client);
-        Client updatedClient = clientService.getById(1);
+        clientService.edit(client);
+        Client updatedClient = clientService.findById(1);
         Assertions.assertEquals(client.getId(), updatedClient.getId());
         Assertions.assertEquals(client.getFullName(), updatedClient.getFullName());
         Assertions.assertEquals(client.getBirthDate(), updatedClient.getBirthDate());
@@ -87,24 +85,24 @@ class ClientServiceTest extends TestConfig{
         Client client = new Client.Builder()
                 .id(1)
                 .build();
-        Assertions.assertThrows(RuntimeException.class, () -> clientService.create(client));
+        Assertions.assertThrows(RuntimeException.class, () -> clientService.add(client));
     }
 
     @Test
     void delete_existingId_notUsed_returnsNothing() {
-        clientService.delete(17);
-        Assertions.assertEquals(16, clientService.getAll().size());
-        Assertions.assertThrows(RuntimeException.class, () -> clientService.getById(17));
+        clientService.remove(17);
+        Assertions.assertEquals(16, clientService.findAll().size());
+        Assertions.assertThrows(RuntimeException.class, () -> clientService.findById(17));
     }
 
     @Test
     void delete_existingId_used_throwsRuntimeException() {
-        Assertions.assertThrows(RuntimeException.class, () -> clientService.delete(1));
+        Assertions.assertThrows(RuntimeException.class, () -> clientService.remove(1));
     }
 
     @Test
     void delete_wrongId_throwsRuntimeException() {
-        Assertions.assertThrows(RuntimeException.class, () -> clientService.delete(999));
+        Assertions.assertThrows(RuntimeException.class, () -> clientService.remove(999));
     }
 
     @Test
@@ -112,7 +110,7 @@ class ClientServiceTest extends TestConfig{
     }
 
     private void clearDB() {
-        try (var connection = DataSource.getConnection();
+        try (var connection = new DataSource().getConnection();
              var statement = connection.createStatement();
         ) {
             statement.execute("DELETE  FROM loans WHERE id IS NOT NULL;" +

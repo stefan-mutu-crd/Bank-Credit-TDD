@@ -1,7 +1,6 @@
 package com.cedacri.internship.entities;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 public class Client {
@@ -12,13 +11,13 @@ public class Client {
 
     private final LocalDate birthDate;
 
-    private final List<Loan> creditHistory;
+    private final int bankId;
 
     public Client(Builder builder) {
         this.id = builder.id;
         this.fullName = builder.fullName;
         this.birthDate = builder.birthDate;
-        this.creditHistory = builder.creditHistory;
+        this.bankId = builder.bankId;
     }
 
     public int getId() {
@@ -34,8 +33,8 @@ public class Client {
         return birthDate;
     }
 
-    public List<Loan> getCreditHistory() {
-        return creditHistory;
+    public int getBankId() {
+        return bankId;
     }
 
 
@@ -43,12 +42,15 @@ public class Client {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return id == client.id && Objects.equals(fullName, client.fullName) && Objects.equals(birthDate, client.birthDate) && Objects.equals(creditHistory, client.creditHistory);
+        return id == client.id
+                && Objects.equals(fullName, client.fullName)
+                && Objects.equals(birthDate, client.birthDate)
+                && bankId == client.getBankId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fullName, birthDate, creditHistory);
+        return Objects.hash(id, fullName, birthDate, bankId);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class Client {
                 "id='" + id + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", birthDate=" + birthDate +
-                ", creditHistory=" + creditHistory +
+                ", bankId=" + bankId +
                 '}';
     }
 
@@ -68,7 +70,7 @@ public class Client {
 
         private LocalDate birthDate;
 
-        private List<Loan> creditHistory;
+        private int bankId;
 
         public Builder id(int id) {
             this.id = id;
@@ -85,8 +87,8 @@ public class Client {
             return this;
         }
 
-        public Builder creditHistory(List<Loan> creditHistory) {
-            this.creditHistory = creditHistory;
+        public Builder bankId(int bankId) {
+            this.bankId = bankId;
             return this;
         }
 

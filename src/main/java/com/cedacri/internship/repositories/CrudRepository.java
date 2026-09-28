@@ -1,8 +1,10 @@
-package com.cedacri.internship.services;
+package com.cedacri.internship.repositories;
 
 import java.util.List;
 
-public interface CrudOperations<T> {
+public interface CrudRepository<T> {
+
+
 
     T getById(int id) throws RuntimeException;
 

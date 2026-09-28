@@ -24,20 +24,20 @@ public class Main {
 //        }
 //    }
 
-        try {
-            var connection = DataSource.getConnection();
-            var statement = connection.createStatement();
-            String query = "SELECT * FROM banks;";
-
-            var resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("branch"));
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+////            var connection = DataSource.getConnection();
+////            var statement = connection.createStatement();
+////            String query = "SELECT * FROM banks;";
+////
+////            var resultSet = statement.executeQuery(query);
+////
+////            while (resultSet.next()) {
+////                System.out.println(resultSet.getString("branch"));
+////            }
+//
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
     }
 }

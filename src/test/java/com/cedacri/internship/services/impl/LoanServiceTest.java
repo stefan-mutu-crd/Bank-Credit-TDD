@@ -3,6 +3,7 @@ package com.cedacri.internship.services.impl;
 import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Loan;
 import com.cedacri.internship.exceptions.ResourceNotFoundException;
+import com.cedacri.internship.repositories.impl.LoanRepositoryImpl;
 import com.cedacri.internship.services.LoanService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,12 +16,13 @@ class LoanServiceTest extends TestConfig {
     private final LoanService loanService;
 
     LoanServiceTest() {
-        loanService = new LoanServiceImpl();
+        var repository = new LoanRepositoryImpl(super.dataSource);
+        loanService = new LoanServiceImpl(repository);
     }
 
     @Test
     void getById_existingId_returnsBank() {
-        Loan loan = loanService.getById(1);
+        Loan loan = loanService.findById(1);
         Assertions.assertEquals(1, loan.getId());
         Assertions.assertEquals(10000, loan.getInitialSum());
         Assertions.assertEquals(11000, loan.getRefunded());
@@ -32,19 +34,19 @@ class LoanServiceTest extends TestConfig {
 
     @Test
     void getById_nonExistingId_returnsNull() {
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> loanService.getById(999));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> loanService.findById(999));
     }
 
     @Test
     void getAll_populatedDb_returnsAll() {
-        List<Loan> banks = loanService.getAll();
+        List<Loan> banks = loanService.findAll();
         Assertions.assertEquals(19, banks.size());
     }
 
     @Test
     void getAll_emptyDb_returnsEmpty() {
         clearDB();
-        List<Loan> banks = loanService.getAll();
+        List<Loan> banks = loanService.findAll();
         Assertions.assertTrue(banks.isEmpty());
     }
 
@@ -59,8 +61,8 @@ class LoanServiceTest extends TestConfig {
                 .percentage(0)
                 .build();
 
-        loanService.create(loan);
-        List<Loan> banks = loanService.getAll();
+        loanService.add(loan);
+        List<Loan> banks = loanService.findAll();
         Assertions.assertEquals(20, banks.size());
     }
 
@@ -68,7 +70,7 @@ class LoanServiceTest extends TestConfig {
     void create_invalidInput_throwsRuntimeException() {
         Loan loan = new Loan.Builder()
                 .build();
-        Assertions.assertThrows(RuntimeException.class, () -> loanService.create(loan));
+        Assertions.assertThrows(RuntimeException.class, () -> loanService.add(loan));
     }
 
     @Test
@@ -83,8 +85,8 @@ class LoanServiceTest extends TestConfig {
                 .percentage(0)
                 .build();
 
-        loanService.update(loan);
-        Loan updatedLoan = loanService.getById(1);
+        loanService.edit(loan);
+        Loan updatedLoan = loanService.findById(1);
         Assertions.assertEquals(loan.getId(), updatedLoan.getId());
         Assertions.assertEquals(loan.getInitialSum(), updatedLoan.getInitialSum());
         Assertions.assertEquals(loan.getDeadline(), updatedLoan.getDeadline());
@@ -96,14 +98,14 @@ class LoanServiceTest extends TestConfig {
         Loan loan = new Loan.Builder()
                 .id(1)
                 .build();
-        Assertions.assertThrows(RuntimeException.class, () -> loanService.create(loan));
+        Assertions.assertThrows(RuntimeException.class, () -> loanService.add(loan));
     }
 
     @Test
     void delete_existingId_notUsed_returnsNothing() {
-        loanService.delete(5);
-        Assertions.assertEquals(18, loanService.getAll().size());
-        Assertions.assertThrows(RuntimeException.class, () -> loanService.getById(5));
+        loanService.remove(5);
+        Assertions.assertEquals(18, loanService.findAll().size());
+        Assertions.assertThrows(RuntimeException.class, () -> loanService.findById(5));
     }
 
 //    @Test
@@ -113,7 +115,7 @@ class LoanServiceTest extends TestConfig {
 
     @Test
     void delete_wrongId_throwsRuntimeException() {
-        Assertions.assertThrows(RuntimeException.class, () -> loanService.delete(999));
+        Assertions.assertThrows(RuntimeException.class, () -> loanService.remove(999));
     }
 
     @Test
@@ -121,7 +123,7 @@ class LoanServiceTest extends TestConfig {
     }
 
     private void clearDB() {
-        try (var connection = DataSource.getConnection();
+        try (var connection = new DataSource().getConnection();
              var statement = connection.createStatement();
         ) {
             statement.execute("DELETE  FROM loans WHERE id IS NOT NULL;" +

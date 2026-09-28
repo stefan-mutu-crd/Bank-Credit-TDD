@@ -19,6 +19,8 @@ public class Loan {
 
     private final int percentage;
 
+    private final int clientId;
+
     Loan(Builder builder) {
         this.id = builder.id;
         this.initialSum = builder.initialSum;
@@ -27,6 +29,7 @@ public class Loan {
         this.dateOfIssue = builder.dateOfIssue;
         this.deadline = builder.deadline;
         this.percentage = builder.percentage;
+        this.clientId = builder.clientId;
     }
 
     public int getId() {
@@ -62,6 +65,9 @@ public class Loan {
         return deadline;
     }
 
+    public int getClientId() {
+        return clientId;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -73,7 +79,8 @@ public class Loan {
                 && percentage == loan.percentage
                 && Objects.equals(purpose, loan.purpose)
                 && Objects.equals(dateOfIssue, loan.dateOfIssue)
-                && Objects.equals(deadline, loan.deadline);
+                && Objects.equals(deadline, loan.deadline)
+                && clientId == loan.getClientId();
     }
 
     @Override
@@ -84,7 +91,8 @@ public class Loan {
                 purpose,
                 dateOfIssue,
                 deadline,
-                percentage);
+                percentage,
+                clientId);
     }
 
     @Override
@@ -97,6 +105,7 @@ public class Loan {
                 ", dateOfIssue=" + dateOfIssue +
                 ", deadline=" + deadline +
                 ", percentage=" + percentage +
+                ", clientId=" + clientId +
                 '}';
     }
 
@@ -114,6 +123,8 @@ public class Loan {
         private LocalDate deadline;
 
         private int percentage;
+
+        private int clientId;
 
         public Builder id(int id) {
             this.id = id;
@@ -147,6 +158,11 @@ public class Loan {
 
         public Builder percentage(int percentage) {
             this.percentage = percentage;
+            return this;
+        }
+
+        public Builder clientId(int clientId) {
+            this.clientId = clientId;
             return this;
         }
 
