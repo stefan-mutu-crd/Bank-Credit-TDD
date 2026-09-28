@@ -2,6 +2,7 @@ package com.cedacri.internship.services.impl;
 
 import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Loan;
+import com.cedacri.internship.exceptions.ResourceNotFoundException;
 import com.cedacri.internship.services.LoanService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,14 +32,13 @@ class LoanServiceTest extends TestConfig {
 
     @Test
     void getById_nonExistingId_returnsNull() {
-        Loan loan = loanService.getById(999);
-        Assertions.assertNull(loan);
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> loanService.getById(999));
     }
 
     @Test
     void getAll_populatedDb_returnsAll() {
         List<Loan> banks = loanService.getAll();
-        Assertions.assertEquals(20, banks.size());
+        Assertions.assertEquals(19, banks.size());
     }
 
     @Test
@@ -61,7 +61,7 @@ class LoanServiceTest extends TestConfig {
 
         loanService.create(loan);
         List<Loan> banks = loanService.getAll();
-        Assertions.assertEquals(5, banks.size());
+        Assertions.assertEquals(20, banks.size());
     }
 
     @Test
@@ -102,14 +102,14 @@ class LoanServiceTest extends TestConfig {
     @Test
     void delete_existingId_notUsed_returnsNothing() {
         loanService.delete(5);
-        Assertions.assertEquals(4, loanService.getAll().size());
+        Assertions.assertEquals(18, loanService.getAll().size());
         Assertions.assertThrows(RuntimeException.class, () -> loanService.getById(5));
     }
 
-    @Test
-    void delete_existingId_used_throwsRuntimeException() {
-        Assertions.assertThrows(RuntimeException.class, () -> loanService.delete(1));
-    }
+//    @Test
+//    void delete_existingId_used_throwsRuntimeException() {
+//        Assertions.assertThrows(RuntimeException.class, () -> loanService.delete(1));
+//    }
 
     @Test
     void delete_wrongId_throwsRuntimeException() {

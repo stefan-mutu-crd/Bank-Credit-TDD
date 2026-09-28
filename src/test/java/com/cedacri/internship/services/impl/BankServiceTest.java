@@ -2,6 +2,7 @@ package com.cedacri.internship.services.impl;
 
 import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Bank;
+import com.cedacri.internship.exceptions.ResourceNotFoundException;
 import com.cedacri.internship.services.BankService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,14 +28,13 @@ class BankServiceTest extends TestConfig {
 
     @Test
     void getById_nonExistingId_returnsNull() {
-        Bank bank = bankService.getById(999);
-        Assertions.assertNull(bank);
+        Assertions.assertThrows(ResourceNotFoundException.class, ()->bankService.getById(999));
     }
 
     @Test
     void getAll_populatedDb_returnsAll() {
         List<Bank> banks = bankService.getAll();
-        Assertions.assertEquals(4, banks.size());
+        Assertions.assertEquals(5, banks.size());
     }
 
     @Test
@@ -53,7 +53,7 @@ class BankServiceTest extends TestConfig {
 
         bankService.create(bank);
         List<Bank> banks = bankService.getAll();
-        Assertions.assertEquals(5, banks.size());
+        Assertions.assertEquals(6, banks.size());
     }
 
     @Test

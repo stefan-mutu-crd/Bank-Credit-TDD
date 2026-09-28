@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BankServiceImpl implements BankService {
+
     @Override
     public Bank getById(int id) throws RuntimeException {
         String query = "SELECT * FROM banks WHERE id=?";
@@ -89,9 +90,7 @@ public class BankServiceImpl implements BankService {
 
         getById(id);
 
-        String query = """
-                DELETE FROM banks WHERE id = ?;
-                """;
+        String query = "DELETE FROM banks WHERE id = ?;";
         try (var connection = DataSource.getConnection();
              var statement = connection.prepareStatement(query);
         ) {

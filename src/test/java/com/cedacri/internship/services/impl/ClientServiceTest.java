@@ -3,6 +3,7 @@ package com.cedacri.internship.services.impl;
 import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Client;
 import com.cedacri.internship.entities.Client;
+import com.cedacri.internship.exceptions.ResourceNotFoundException;
 import com.cedacri.internship.services.ClientService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,8 +32,7 @@ class ClientServiceTest extends TestConfig{
 
     @Test
     void getById_nonExistingId_returnsNull() {
-        Client client = clientService.getById(999);
-        Assertions.assertNull(client);
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->clientService.getById(999));
     }
 
     @Test
@@ -57,7 +57,7 @@ class ClientServiceTest extends TestConfig{
 
         clientService.create(client);
         List<Client> banks = clientService.getAll();
-        Assertions.assertEquals(5, banks.size());
+        Assertions.assertEquals(18, banks.size());
     }
 
     @Test
@@ -92,9 +92,9 @@ class ClientServiceTest extends TestConfig{
 
     @Test
     void delete_existingId_notUsed_returnsNothing() {
-        clientService.delete(5);
-        Assertions.assertEquals(4, clientService.getAll().size());
-        Assertions.assertThrows(RuntimeException.class, () -> clientService.getById(5));
+        clientService.delete(17);
+        Assertions.assertEquals(16, clientService.getAll().size());
+        Assertions.assertThrows(RuntimeException.class, () -> clientService.getById(17));
     }
 
     @Test

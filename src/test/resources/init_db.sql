@@ -59,7 +59,8 @@ VALUES ('Ștefan Mutu', '1998-08-15', 1),      -- 1
        ('Alexandru Rotaru', '2003-06-18', 4), -- 13
        ('Doina Ceban', '1958-08-30', 4),      -- 14 (no loans)
        ('Nicolae Sîrbu', '1983-05-25', 4),    -- 15
-       ('Tatiana Lungu', '1997-03-07', 4); -- 16
+       ('Tatiana Lungu', '1997-03-07', 4),    -- 16
+       ('Nicolat Petrescu', '1997-03-07', 4); -- 17
 
 INSERT INTO loans (initial_sum, refunded, purpose, date_of_issue, deadline, percentage, client_id)
 VALUES (10000, 11000, 'Achiziționare frigider', '2025-05-01', '2026-05-01', 10, 1),      -- repaid      (total 11000)
