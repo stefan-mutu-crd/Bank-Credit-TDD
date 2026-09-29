@@ -1,43 +1,23 @@
 package com.cedacri.internship;
 
-import com.cedacri.internship.config.DataSource;
+import com.cedacri.internship.config.HttpClientConfig;
+import com.cedacri.internship.services.CurrencyService;
+import com.cedacri.internship.services.impl.currency.FrankfurterCurrencyServiceImpl;
 
-import java.sql.SQLException;
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) {
-////        try (var connection = DriverManager.getConnection("jdbc:h2:./bank-system;AUTO_SERVER=TRUE");
-//        try (var connection = DriverManager.getConnection("jdbc:h2:./bank-system;AUTO_SERVER=TRUE");
-//             var statement = connection.createStatement()) {
-//
-//            String query = "SELECT * FROM banks;";
-//
-//            var resultSet = statement.executeQuery(query);
-//
-//            while(resultSet.next()){
-//                System.out.println(resultSet.getString("branch"));
-//            }
-//
-//        } catch (SQLException e) {
-//            System.err.println(e.getMessage());
-//        }
-//    }
+    public static void main(String[] args) throws IOException, InterruptedException {
 
-//        try {
-////            var connection = DataSource.getConnection();
-////            var statement = connection.createStatement();
-////            String query = "SELECT * FROM banks;";
-////
-////            var resultSet = statement.executeQuery(query);
-////
-////            while (resultSet.next()) {
-////                System.out.println(resultSet.getString("branch"));
-////            }
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        System.setProperty("javax.net.ssl.trustStoreType", "Windows-ROOT");
 
+        HttpClientConfig httpClientConfig = new HttpClientConfig();
+
+        CurrencyService currencyService = new FrankfurterCurrencyServiceImpl("https://api.frankfurter.dev/v1/latest",httpClientConfig.getHttpClient());
+
+        System.out.println(currencyService.getRates());
+
+        System.out.println(currencyService.convertToCurrency(1000, "AUD"));
     }
 }
