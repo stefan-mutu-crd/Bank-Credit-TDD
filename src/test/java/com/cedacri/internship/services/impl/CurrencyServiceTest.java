@@ -55,9 +55,4 @@ public class CurrencyServiceTest {
         assertEquals(3, rates.size());
         assertEquals(1.08, rates.get("USD"));
     }
-
-    @Test
-    void convertToCurrency() {
-
-    }
 }
