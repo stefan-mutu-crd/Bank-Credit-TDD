@@ -50,7 +50,7 @@ class BankServiceTest extends TestConfig {
 
     @Test
     void create_validInput_returnsNothing() {
-        Bank bank = new Bank.Builder()
+        Bank bank =  Bank.builder()
                 .branch("Maib Poșta Veche")
                 .address("str. Ceucari")
                 .build();
@@ -62,14 +62,14 @@ class BankServiceTest extends TestConfig {
 
     @Test
     void create_invalidInput_throwsRuntimeException() {
-        Bank bank = new Bank.Builder()
+        Bank bank = Bank.builder()
                 .build();
         Assertions.assertThrows(RuntimeException.class, () -> bankService.add(bank));
     }
 
     @Test
     void update_validInput_returnsNothing() {
-        Bank bank = new Bank.Builder()
+        Bank bank = Bank.builder()
                 .id(1)
                 .branch("Centru New")
                 .address("str. 31 august")
@@ -83,7 +83,7 @@ class BankServiceTest extends TestConfig {
 
     @Test
     void update_invalidInput_throwsRuntimeException() {
-        Bank bank = new Bank.Builder()
+        Bank bank = Bank.builder()
                 .id(1)
                 .address(null)
                 .build();

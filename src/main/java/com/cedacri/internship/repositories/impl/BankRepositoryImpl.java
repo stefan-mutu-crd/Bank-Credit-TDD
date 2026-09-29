@@ -49,7 +49,7 @@ public class BankRepositoryImpl extends AbstractJDBCRepository<Bank> implements 
 
     @Override
     protected Bank mapRow(ResultSet resultSet) throws SQLException {
-        return new Bank.Builder()
+        return  Bank.builder()
                 .id(resultSet.getInt("id"))
                 .branch(resultSet.getString("branch"))
                 .address(resultSet.getString("address"))

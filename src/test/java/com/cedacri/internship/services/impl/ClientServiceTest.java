@@ -50,9 +50,9 @@ class ClientServiceTest extends TestConfig {
 
     @Test
     void create_validInput_returnsNothing() {
-        Client client = new Client.Builder()
+        Client client = Client.builder()
                 .fullName("Ghorghe Topa")
-                .birtDate(LocalDate.of(1960, 1, 1))
+                .birthDate(LocalDate.of(1960, 1, 1))
                 .build();
 
         clientService.add(client);
@@ -62,17 +62,17 @@ class ClientServiceTest extends TestConfig {
 
     @Test
     void create_invalidInput_throwsRuntimeException() {
-        Client client = new Client.Builder()
+        Client client = Client.builder()
                 .build();
         Assertions.assertThrows(RuntimeException.class, () -> clientService.add(client));
     }
 
     @Test
     void update_validInput_returnsNothing() {
-        Client client = new Client.Builder()
+        Client client = Client.builder()
                 .id(1)
                 .fullName("Ion Creanga")
-                .birtDate(LocalDate.of(1860, 12, 1))
+                .birthDate(LocalDate.of(1860, 12, 1))
                 .build();
 
         clientService.edit(client);
@@ -84,7 +84,7 @@ class ClientServiceTest extends TestConfig {
 
     @Test
     void update_invalidInput_throwsRuntimeException() {
-        Client client = new Client.Builder()
+        Client client = Client.builder()
                 .id(1)
                 .build();
         Assertions.assertThrows(RuntimeException.class, () -> clientService.add(client));

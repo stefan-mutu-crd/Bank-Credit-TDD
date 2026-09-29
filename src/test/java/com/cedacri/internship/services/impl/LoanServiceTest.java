@@ -52,7 +52,7 @@ class LoanServiceTest extends TestConfig {
 
     @Test
     void create_validInput_returnsNothing() {
-        Loan loan = new Loan.Builder()
+        Loan loan = Loan.builder()
                 .initialSum(1000)
                 .refunded(1000)
                 .purpose("Caruta")
@@ -68,14 +68,14 @@ class LoanServiceTest extends TestConfig {
 
     @Test
     void create_invalidInput_throwsRuntimeException() {
-        Loan loan = new Loan.Builder()
+        Loan loan = Loan.builder()
                 .build();
         Assertions.assertThrows(RuntimeException.class, () -> loanService.add(loan));
     }
 
     @Test
     void update_validInput_returnsNothing() {
-        Loan loan = new Loan.Builder()
+        Loan loan = Loan.builder()
                 .id(1)
                 .initialSum(1000)
                 .refunded(1000)
@@ -95,7 +95,7 @@ class LoanServiceTest extends TestConfig {
 
     @Test
     void update_invalidInput_throwsRuntimeException() {
-        Loan loan = new Loan.Builder()
+        Loan loan =  Loan.builder()
                 .id(1)
                 .build();
         Assertions.assertThrows(RuntimeException.class, () -> loanService.add(loan));

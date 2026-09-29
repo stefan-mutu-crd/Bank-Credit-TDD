@@ -115,7 +115,7 @@ public class LoanRepositoryImpl extends AbstractJDBCRepository<Loan> implements 
 
     @Override
     protected Loan mapRow(ResultSet resultSet) throws SQLException {
-        return new Loan.Builder()
+        return Loan.builder()
                 .id(resultSet.getInt("id"))
                 .initialSum(resultSet.getDouble("initial_sum"))
                 .refunded(resultSet.getDouble("refunded"))

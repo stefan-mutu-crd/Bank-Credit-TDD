@@ -16,10 +16,10 @@ public class ClientRepositoryImpl extends AbstractJDBCRepository<Client> impleme
 
     @Override
     protected Client mapRow(ResultSet resultSet) throws SQLException {
-        return new Client.Builder()
+        return  Client.builder()
                 .id(resultSet.getInt("id"))
                 .fullName(resultSet.getString("full_name"))
-                .birtDate(LocalDate.parse(resultSet.getString("birth_date")))
+                .birthDate(LocalDate.parse(resultSet.getString("birth_date")))
                 .build();
     }
 
