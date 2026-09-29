@@ -1,8 +1,13 @@
 package com.cedacri.internship;
 
-import com.cedacri.internship.config.HttpClientConfig;
-import com.cedacri.internship.services.CurrencyService;
-import com.cedacri.internship.services.impl.currency.FrankfurterCurrencyServiceImpl;
+import com.cedacri.internship.config.DataSourceFactory;
+import com.cedacri.internship.repositories.BankRepository;
+import com.cedacri.internship.repositories.LoanRepository;
+import com.cedacri.internship.repositories.impl.BankRepositoryImpl;
+import com.cedacri.internship.repositories.impl.LoanRepositoryImpl;
+import com.cedacri.internship.services.BankService;
+import com.cedacri.internship.services.impl.BankServiceImpl;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.IOException;
 
@@ -12,12 +17,11 @@ public class Main {
 
         System.setProperty("javax.net.ssl.trustStoreType", "Windows-ROOT");
 
-        HttpClientConfig httpClientConfig = new HttpClientConfig();
+        HikariDataSource dataSource = DataSourceFactory.create("jdbc:postgresql://localhost:5432/bank-system?user=root&password=admin");
+        BankRepository bankRepository = new BankRepositoryImpl(dataSource);
+        LoanRepository loanRepository = new LoanRepositoryImpl(dataSource);
+        BankService bankService = new BankServiceImpl(bankRepository, loanRepository);
 
-        CurrencyService currencyService = new FrankfurterCurrencyServiceImpl("https://api.frankfurter.dev/v1/latest",httpClientConfig.getHttpClient());
-
-        System.out.println(currencyService.getRates());
-
-        System.out.println(currencyService.convertToCurrency(1000, "AUD"));
+        System.out.println(bankService.findAll());
     }
 }
