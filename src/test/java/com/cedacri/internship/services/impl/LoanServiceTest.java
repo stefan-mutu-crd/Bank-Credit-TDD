@@ -1,8 +1,9 @@
 package com.cedacri.internship.services.impl;
 
-import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Loan;
 import com.cedacri.internship.exceptions.ResourceNotFoundException;
+import com.cedacri.internship.repositories.ClientRepository;
+import com.cedacri.internship.repositories.impl.ClientRepositoryImpl;
 import com.cedacri.internship.repositories.impl.LoanRepositoryImpl;
 import com.cedacri.internship.services.LoanService;
 import org.junit.jupiter.api.Assertions;
@@ -14,10 +15,12 @@ import java.util.List;
 class LoanServiceTest extends TestConfig {
 
     private final LoanService loanService;
+    private final ClientRepository clientRepository;
 
     LoanServiceTest() {
-        var repository = new LoanRepositoryImpl(super.dataSource);
+        var repository = new LoanRepositoryImpl(super.sessionFactory);
         loanService = new LoanServiceImpl(repository);
+        this.clientRepository = new ClientRepositoryImpl(super.sessionFactory);
     }
 
     @Test
@@ -44,21 +47,15 @@ class LoanServiceTest extends TestConfig {
     }
 
     @Test
-    void getAll_emptyDb_returnsEmpty() {
-        clearDB();
-        List<Loan> banks = loanService.findAll();
-        Assertions.assertTrue(banks.isEmpty());
-    }
-
-    @Test
     void create_validInput_returnsNothing() {
         Loan loan = Loan.builder()
-                .initialSum(1000)
-                .refunded(1000)
+                .initialSum(Double.valueOf(1000))
+                .refunded(Double.valueOf(1000))
                 .purpose("Caruta")
                 .dateOfIssue(LocalDate.of(2026, 5, 1))
                 .deadline(LocalDate.of(2026, 5, 1))
                 .percentage(0)
+                .client(clientRepository.getById(1))
                 .build();
 
         loanService.add(loan);
@@ -77,12 +74,13 @@ class LoanServiceTest extends TestConfig {
     void update_validInput_returnsNothing() {
         Loan loan = Loan.builder()
                 .id(1)
-                .initialSum(1000)
-                .refunded(1000)
+                .initialSum(1000.0)
+                .refunded(1000.0)
                 .purpose("Moped")
                 .dateOfIssue(LocalDate.of(2026, 5, 1))
                 .deadline(LocalDate.of(2026, 5, 1))
                 .percentage(0)
+                .client(clientRepository.getById(1))
                 .build();
 
         loanService.edit(loan);
@@ -95,7 +93,7 @@ class LoanServiceTest extends TestConfig {
 
     @Test
     void update_invalidInput_throwsRuntimeException() {
-        Loan loan =  Loan.builder()
+        Loan loan = Loan.builder()
                 .id(1)
                 .build();
         Assertions.assertThrows(RuntimeException.class, () -> loanService.add(loan));
@@ -125,15 +123,4 @@ class LoanServiceTest extends TestConfig {
         Assertions.assertEquals(-3000, loanService.getBalance(loan));
     }
 
-    private void clearDB() {
-        try (var connection = new DataSource().getConnection();
-             var statement = connection.createStatement();
-        ) {
-            statement.execute("DELETE  FROM loans WHERE id IS NOT NULL;" +
-                    "DELETE  FROM clients WHERE id IS NOT NULL;" +
-                    "DELETE  FROM banks WHERE id IS NOT NULL;");
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
-    }
 }

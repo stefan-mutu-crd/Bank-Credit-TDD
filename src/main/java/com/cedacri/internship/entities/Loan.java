@@ -1,27 +1,35 @@
 package com.cedacri.internship.entities;
 
-import lombok.Builder;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@Entity
+@Table(name = "loans")
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Loan {
 
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    private final double initialSum;
+    private Double initialSum;
 
-    private final double refunded;
+    private Double refunded;
 
-    private final String purpose;
+    private String purpose;
 
-    private final LocalDate dateOfIssue;
+    private LocalDate dateOfIssue;
 
-    private final LocalDate deadline;
+    private LocalDate deadline;
 
-    private final int percentage;
+    private Integer percentage;
 
-    private final int clientId;
+    @ManyToOne
+    private Client client;
 }

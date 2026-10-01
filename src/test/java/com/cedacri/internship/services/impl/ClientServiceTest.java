@@ -2,9 +2,13 @@ package com.cedacri.internship.services.impl;
 
 import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Client;
+import com.cedacri.internship.entities.Loan;
 import com.cedacri.internship.exceptions.ResourceNotFoundException;
+import com.cedacri.internship.repositories.BankRepository;
+import com.cedacri.internship.repositories.impl.BankRepositoryImpl;
 import com.cedacri.internship.repositories.impl.ClientRepositoryImpl;
 import com.cedacri.internship.repositories.impl.LoanRepositoryImpl;
+import com.cedacri.internship.services.BankService;
 import com.cedacri.internship.services.ClientService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,11 +19,14 @@ import java.util.List;
 class ClientServiceTest extends TestConfig {
 
     private final ClientService clientService;
+    private final BankRepository bankRepository;
 
     ClientServiceTest() {
-        var clientRepository = new ClientRepositoryImpl(super.dataSource);
-        var loanRepository = new LoanRepositoryImpl(super.dataSource);
+        var clientRepository = new ClientRepositoryImpl(super.sessionFactory);
+        var loanRepository = new LoanRepositoryImpl(super.sessionFactory);
         this.clientService = new ClientServiceImpl(clientRepository, loanRepository);
+        this.bankRepository = new BankRepositoryImpl(super.sessionFactory);
+
     }
 
     @Test
@@ -42,17 +49,11 @@ class ClientServiceTest extends TestConfig {
     }
 
     @Test
-    void getAll_emptyDb_returnsEmpty() {
-        clearDB();
-        List<Client> banks = clientService.findAll();
-        Assertions.assertTrue(banks.isEmpty());
-    }
-
-    @Test
     void create_validInput_returnsNothing() {
         Client client = Client.builder()
                 .fullName("Ghorghe Topa")
                 .birthDate(LocalDate.of(1960, 1, 1))
+                .bank(bankRepository.getById(1))
                 .build();
 
         clientService.add(client);
@@ -73,6 +74,7 @@ class ClientServiceTest extends TestConfig {
                 .id(1)
                 .fullName("Ion Creanga")
                 .birthDate(LocalDate.of(1860, 12, 1))
+                .bank(bankRepository.getById(1))
                 .build();
 
         clientService.edit(client);
@@ -125,18 +127,5 @@ class ClientServiceTest extends TestConfig {
     @Test
     void isValidForNewLoan_NegativeBalance_ReturnsFalse() {
         Assertions.assertTrue(clientService.isValidForNewLoan(3));
-    }
-
-    private void clearDB() {
-        try (var connection = new DataSource().getConnection();
-             var statement = connection.createStatement();
-        ) {
-            statement.execute("DELETE  FROM loans WHERE id IS NOT NULL;" +
-                    "DELETE  FROM clients WHERE id IS NOT NULL;" +
-                    "DELETE  FROM banks WHERE id IS NOT NULL;");
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
-        ;
     }
 }

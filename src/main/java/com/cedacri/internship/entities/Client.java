@@ -1,20 +1,29 @@
 package com.cedacri.internship.entities;
 
-import lombok.Builder;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
-@Data
+@Entity
+@Table(name = "clients")
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Client {
 
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    private final String fullName;
+    private String fullName;
 
-    private final LocalDate birthDate;
+    private LocalDate birthDate;
 
-    private final int bankId;
+    @ManyToOne
+    private Bank bank;
 }

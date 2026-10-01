@@ -2,7 +2,5 @@
 <project version="4">
   <component name="DataSourcePerFileMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/30db31ee-c8d3-43dd-b8a0-cc4517011737/console.sql" value="30db31ee-c8d3-43dd-b8a0-cc4517011737" />
-    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/abd78d1d-39b5-45f7-8c47-d8fc502180d3/console.sql" value="abd78d1d-39b5-45f7-8c47-d8fc502180d3" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/creste_db.sql" value="abd78d1d-39b5-45f7-8c47-d8fc502180d3" />
   </component>
 </project>

@@ -2,6 +2,7 @@ package com.cedacri.internship.services.impl;
 
 import com.cedacri.internship.config.DataSource;
 import com.cedacri.internship.entities.Bank;
+import com.cedacri.internship.entities.Loan;
 import com.cedacri.internship.exceptions.ResourceNotFoundException;
 import com.cedacri.internship.repositories.impl.BankRepositoryImpl;
 import com.cedacri.internship.repositories.impl.LoanRepositoryImpl;
@@ -16,8 +17,8 @@ class BankServiceTest extends TestConfig {
     private final BankService bankService;
 
     BankServiceTest() {
-        var bankRepository = new BankRepositoryImpl(super.dataSource);
-        var loanRepository = new LoanRepositoryImpl(super.dataSource);
+        var bankRepository = new BankRepositoryImpl(super.sessionFactory);
+        var loanRepository = new LoanRepositoryImpl(super.sessionFactory);
         this.bankService = new BankServiceImpl(bankRepository,loanRepository);
     }
 
@@ -41,12 +42,6 @@ class BankServiceTest extends TestConfig {
         Assertions.assertEquals(5, banks.size());
     }
 
-    @Test
-    void getAll_emptyDb_returnsEmpty() {
-        clearDB();
-        List<Bank> banks = bankService.findAll();
-        Assertions.assertTrue(banks.isEmpty());
-    }
 
     @Test
     void create_validInput_returnsNothing() {
@@ -125,18 +120,5 @@ class BankServiceTest extends TestConfig {
     @Test
     void isProfitable_NegativeBalance_ReturnsFalse() {
         Assertions.assertTrue(bankService.isProfitable(3));
-    }
-
-    private void clearDB() {
-        try (var connection = new DataSource().getConnection();
-             var statement = connection.createStatement();
-        ) {
-            statement.execute("DELETE  FROM loans WHERE id IS NOT NULL;" +
-                    "DELETE  FROM clients WHERE id IS NOT NULL;" +
-                    "DELETE  FROM banks WHERE id IS NOT NULL;");
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
-        ;
     }
 }

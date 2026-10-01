@@ -1,15 +1,25 @@
 package com.cedacri.internship.entities;
 
-import lombok.Builder;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Data
+import java.util.List;
+
+@Entity
+@Table(name = "banks")
+@Getter
+@Setter
 @Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Bank {
 
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    private final String branch;
+    private String branch;
 
-    private final String address;
+    private String address;
 }

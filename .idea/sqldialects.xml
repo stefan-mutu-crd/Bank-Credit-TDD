@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/src/main/java/com/cedacri/internship/repositories/impl/AbstractJDBCRepository.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/cedacri/internship/repositories/impl/BankRepositoryImpl.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/cedacri/internship/repositories/impl/ClientRepositoryImpl.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/cedacri/internship/repositories/impl/LoanRepositoryImpl.java" dialect="GenericSQL" />
